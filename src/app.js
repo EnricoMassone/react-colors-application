@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import AddColorForm from "./addColorForm";
+import ColorsList from "./colorsList";
+import { v4 } from "uuid";
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +15,17 @@ class App extends Component {
   }
 
   addNewColor(title, hexCode) {
-    console.log(title, hexCode);
+    const colors = [
+      ...this.state.colors,
+      {
+        id: v4(),
+        title,
+        hexCode,
+        rating: 0
+      }
+    ];
+
+    this.setState({ colors });
   }
 
   render() {
@@ -25,8 +37,8 @@ class App extends Component {
           <h1>Colors manager</h1>
         </header>
         <main>
-          <AddColorForm onColorAdded={f => f} />
-          <pre>{JSON.stringify(colors, null, 2)}</pre>
+          <AddColorForm onColorAdded={this.addNewColor} />
+          <ColorsList colors={colors} />
         </main>
       </div>
     );
